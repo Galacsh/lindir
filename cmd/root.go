@@ -1,7 +1,9 @@
 package cmd
 
 import (
+	"fmt"
 	"lindir/app"
+	"lindir/common/colors"
 	"lindir/common/constants"
 	"lindir/common/types"
 	"os"
@@ -22,9 +24,10 @@ type App interface {
 var lindir App
 
 var rootCmd = &cobra.Command{
-	Use:   constants.CMD,
-	Short: rootCmdShort(),
-	Long:  rootCmdLong(),
+	Use:           constants.CMD,
+	Short:         rootCmdShort(),
+	Long:          rootCmdLong(),
+	SilenceErrors: true,
 }
 
 func Execute() {
@@ -33,6 +36,7 @@ func Execute() {
 
 	err := rootCmd.Execute()
 	if err != nil {
+		fmt.Fprintln(os.Stderr, colors.Red(err.Error()))
 		os.Exit(1)
 	}
 }
