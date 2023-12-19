@@ -5,23 +5,11 @@ import (
 	"lindir/app"
 	"lindir/common/colors"
 	"lindir/common/constants"
-	"lindir/common/types"
 	"os"
 	"strings"
 
 	"github.com/spf13/cobra"
 )
-
-type App interface {
-	Init(dir types.Path) error
-	Status(dir types.Path) (types.PathSet, types.PathSet, error)
-	Link(fromDir, toDir types.Path) error
-	Unlink(dir types.Path) error
-	Push(dir types.Path) error
-	Sync(dir types.Path) error
-}
-
-var lindir App
 
 var rootCmd = &cobra.Command{
 	Use:           constants.CMD,
