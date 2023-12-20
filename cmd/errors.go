@@ -49,3 +49,12 @@ type pushError struct {
 func (e pushError) Error() string {
 	return fmt.Sprintf("failed to push '%s': %s", e.dir, e.err.Error())
 }
+
+type syncError struct {
+	dir string
+	err error
+}
+
+func (e syncError) Error() string {
+	return fmt.Sprintf("failed to sync '%s': %s", e.dir, e.err.Error())
+}
