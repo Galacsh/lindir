@@ -58,3 +58,12 @@ type syncError struct {
 func (e syncError) Error() string {
 	return fmt.Sprintf("failed to sync '%s': %s", e.dir, e.err.Error())
 }
+
+type unlinkError struct {
+	dir string
+	err error
+}
+
+func (e unlinkError) Error() string {
+	return fmt.Sprintf("failed to unlink '%s': %s", e.dir, e.err.Error())
+}
