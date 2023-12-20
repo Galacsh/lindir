@@ -1,8 +1,9 @@
 package cmd
 
 import (
-	"fmt"
 	"lindir/common/constants"
+	"lindir/common/types"
+	"os"
 
 	"github.com/spf13/cobra"
 )
@@ -11,8 +12,18 @@ var pushCmd = &cobra.Command{
 	Use:   constants.CMD_PUSH,
 	Short: pushCmdShort(),
 	Long:  pushCmdLong(),
+	Args:  cobra.NoArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		fmt.Printf("%v called", constants.CMD_PUSH)
+		wd, err := os.Getwd()
+		if err != nil {
+			return &cannotGetWorkingDir{constants.CMD_PUSH, err}
+		}
+
+		err = lindir.Push(types.Path(wd))
+		if err != nil {
+			return &pushError{wd, err}
+		}
+
 		return nil
 	},
 }

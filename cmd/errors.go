@@ -40,3 +40,12 @@ type statusError struct {
 func (e statusError) Error() string {
 	return fmt.Sprintf("failed to get status of '%s': %s", e.dir, e.err.Error())
 }
+
+type pushError struct {
+	dir string
+	err error
+}
+
+func (e pushError) Error() string {
+	return fmt.Sprintf("failed to push '%s': %s", e.dir, e.err.Error())
+}
