@@ -20,7 +20,7 @@ var initCmd = &cobra.Command{
 
 		err = lindir.Init(types.Path(wd))
 		if err != nil {
-			return &initError{types.Path(wd), err}
+			return &initError{wd, err}
 		}
 
 		return nil

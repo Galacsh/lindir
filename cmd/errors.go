@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"lindir/common/types"
 )
 
 type cannotGetWorkingDir struct {
@@ -15,10 +14,10 @@ func (e cannotGetWorkingDir) Error() string {
 }
 
 type initError struct {
-	dir types.Path
+	dir string
 	err error
 }
 
 func (e initError) Error() string {
-	return fmt.Sprintf("failed to initialize '%s': %s", e.dir.String(), e.err.Error())
+	return fmt.Sprintf("failed to initialize '%s': %s", e.dir, e.err.Error())
 }
