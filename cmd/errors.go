@@ -31,3 +31,12 @@ type linkError struct {
 func (e linkError) Error() string {
 	return fmt.Sprintf("failed to link '%s' to '%s': %s", e.fromDir, e.toDir, e.err.Error())
 }
+
+type statusError struct {
+	dir string
+	err error
+}
+
+func (e statusError) Error() string {
+	return fmt.Sprintf("failed to get status of '%s': %s", e.dir, e.err.Error())
+}
