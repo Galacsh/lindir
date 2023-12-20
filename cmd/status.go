@@ -14,6 +14,7 @@ var statusCmd = &cobra.Command{
 	Use:   constants.CMD_STATUS,
 	Short: statusCmdShort(),
 	Long:  statusCmdLong(),
+	Args:  cobra.NoArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		wd, err := os.Getwd()
 		if err != nil {

@@ -12,6 +12,7 @@ var initCmd = &cobra.Command{
 	Use:   constants.CMD_INIT,
 	Short: initCmdShort(),
 	Long:  initCmdLong(),
+	Args:  cobra.NoArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		wd, err := os.Getwd()
 		if err != nil {
