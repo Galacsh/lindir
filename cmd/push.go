@@ -42,8 +42,9 @@ func pushCmdLong() string {
 This command will push new/deleted files to linked directories.
 
 This is a one-way directional command. Files that are added/deleted in linked 
-directories are not considered. To sync directories(bi-directional), use 
-'{{CMD}} {{CMD_SYNC}}' instead.
+directories are not considered.
+
+To sync directories(bi-directional), use '{{CMD}} {{CMD_SYNC}}' instead.
 `
 
 	description = strings.ReplaceAll(description, "{{CMD}}", constants.CMD)
