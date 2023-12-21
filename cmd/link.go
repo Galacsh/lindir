@@ -9,7 +9,7 @@ import (
 )
 
 var linkCmd = &cobra.Command{
-	Use:   constants.CMD_LINK,
+	Use:   constants.CMD_LINK + " [from] [to]",
 	Short: linkCmdShort(),
 	Long:  linkCmdLong(),
 	Args:  cobra.RangeArgs(1, 2),
