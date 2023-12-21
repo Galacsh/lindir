@@ -4,6 +4,7 @@ import (
 	"lindir/common/constants"
 	"lindir/common/types"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -33,9 +34,21 @@ func init() {
 }
 
 func syncCmdShort() string {
-	return ""
+	return "Sync new/deleted files between all linked directories"
 }
 
 func syncCmdLong() string {
-	return ""
+	description := `
+This command will sync new/deleted files between all linked directories.
+
+This is a bi-directional command. Files that are added/deleted in each linked 
+directories will also be added/deleted to linked directories.
+
+To push only the changes made in current working directory, 
+use '{{CMD}} {{CMD_PUSH}}' instead.
+`
+
+	description = strings.ReplaceAll(description, "{{CMD}}", constants.CMD)
+	description = strings.ReplaceAll(description, "{{CMD_PUSH}}", constants.CMD_PUSH)
+	return strings.TrimSpace(description)
 }
