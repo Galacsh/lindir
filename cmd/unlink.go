@@ -4,6 +4,7 @@ import (
 	"lindir/common/constants"
 	"lindir/common/types"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -33,9 +34,20 @@ func init() {
 }
 
 func unlinkCmdShort() string {
-	return ""
+	return "Unlink the directory and make it a whole new copy"
 }
 
 func unlinkCmdLong() string {
-	return ""
+	description := `
+This command will unlink the directory and make it a whole new copy.
+
+It will make a copy of the directory, remove the original directory, and rename
+the copied directory to the original directory name.
+
+Notice that after making a whole new copy, the directory will not contain 
+'{{APP_DIR}}' directory.
+`
+
+	description = strings.ReplaceAll(description, "{{APP_DIR}}", constants.APP_DIR)
+	return strings.TrimSpace(description)
 }
