@@ -6,6 +6,7 @@ import (
 	"lindir/common/constants"
 	"lindir/common/types"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -37,11 +38,21 @@ func init() {
 }
 
 func statusCmdShort() string {
-	return ""
+	return "Show the status of the current directory"
 }
 
 func statusCmdLong() string {
-	return ""
+	description := `
+This command will show what files are going to be pushed.
+
+Files that are going to be pushed:
+  - Files that are not currently hard linked to any other directory
+  - Files that have been deleted from the current directory
+`
+
+	description = strings.ReplaceAll(description, "{{APP}}", constants.APP)
+	description = strings.ReplaceAll(description, "{{APP_DIR}}", constants.APP_DIR)
+	return strings.TrimSpace(description)
 }
 
 func printStatus(added types.PathSet, deleted types.PathSet) {
