@@ -4,12 +4,13 @@ import (
 	"lindir/common/constants"
 	"lindir/common/types"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
 
 var linkCmd = &cobra.Command{
-	Use:   constants.CMD_LINK + " [from] [to]",
+	Use:   constants.CMD_LINK + " [<from>] <to>",
 	Short: linkCmdShort(),
 	Long:  linkCmdLong(),
 	Args:  cobra.RangeArgs(1, 2),
@@ -53,9 +54,17 @@ func init() {
 }
 
 func linkCmdShort() string {
-	return ""
+	return "Link your working directory to another directory"
 }
 
 func linkCmdLong() string {
-	return ""
+	description := `
+This command will create a connection from one directory to another.
+
+Arguments:
+* <from> (optional): The directory to link from. If not provided, the current
+	working directory will be used.
+* <to>: The directory to link to.
+`
+	return strings.TrimSpace(description)
 }
