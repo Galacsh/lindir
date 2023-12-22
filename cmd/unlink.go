@@ -4,6 +4,7 @@ import (
 	"lindir/common/constants"
 	"lindir/common/types"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -13,16 +14,24 @@ var unlinkCmd = &cobra.Command{
 	Use:   constants.CMD_UNLINK,
 	Short: unlinkCmdShort(),
 	Long:  unlinkCmdLong(),
-	Args:  cobra.NoArgs,
+	Args:  cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		wd, err := os.Getwd()
+		var targetDir string
+		var err error
+
+		if len(args) == 0 {
+			targetDir, err = os.Getwd()
+		} else {
+			targetDir, err = filepath.Abs(args[0])
+		}
+
 		if err != nil {
 			return &cannotGetDirectory{constants.CMD_UNLINK, err}
 		}
 
-		err = lindir.Unlink(types.Path(wd))
+		err = lindir.Unlink(types.Path(targetDir))
 		if err != nil {
-			return &unlinkError{wd, err}
+			return &unlinkError{targetDir, err}
 		}
 
 		return nil

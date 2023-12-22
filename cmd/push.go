@@ -4,6 +4,7 @@ import (
 	"lindir/common/constants"
 	"lindir/common/types"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -13,16 +14,24 @@ var pushCmd = &cobra.Command{
 	Use:   constants.CMD_PUSH,
 	Short: pushCmdShort(),
 	Long:  pushCmdLong(),
-	Args:  cobra.NoArgs,
+	Args:  cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		wd, err := os.Getwd()
+		var targetDir string
+		var err error
+
+		if len(args) == 0 {
+			targetDir, err = os.Getwd()
+		} else {
+			targetDir, err = filepath.Abs(args[0])
+		}
+
 		if err != nil {
 			return &cannotGetDirectory{constants.CMD_PUSH, err}
 		}
 
-		err = lindir.Push(types.Path(wd))
+		err = lindir.Push(types.Path(targetDir))
 		if err != nil {
-			return &pushError{wd, err}
+			return &pushError{targetDir, err}
 		}
 
 		return nil

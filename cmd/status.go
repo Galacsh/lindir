@@ -6,6 +6,7 @@ import (
 	"lindir/common/constants"
 	"lindir/common/types"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -15,16 +16,24 @@ var statusCmd = &cobra.Command{
 	Use:   constants.CMD_STATUS,
 	Short: statusCmdShort(),
 	Long:  statusCmdLong(),
-	Args:  cobra.NoArgs,
+	Args:  cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		wd, err := os.Getwd()
+		var targetDir string
+		var err error
+
+		if len(args) == 0 {
+			targetDir, err = os.Getwd()
+		} else {
+			targetDir, err = filepath.Abs(args[0])
+		}
+
 		if err != nil {
 			return &cannotGetDirectory{constants.CMD_STATUS, err}
 		}
 
-		added, deleted, err := lindir.Status(types.Path(wd))
+		added, deleted, err := lindir.Status(types.Path(targetDir))
 		if err != nil {
-			return &statusError{wd, err}
+			return &statusError{targetDir, err}
 		}
 
 		printStatus(added, deleted)

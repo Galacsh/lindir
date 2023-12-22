@@ -4,6 +4,7 @@ import (
 	"lindir/common/constants"
 	"lindir/common/types"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -13,16 +14,24 @@ var initCmd = &cobra.Command{
 	Use:   constants.CMD_INIT,
 	Short: initCmdShort(),
 	Long:  initCmdLong(),
-	Args:  cobra.NoArgs,
+	Args:  cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		wd, err := os.Getwd()
+		var targetDir string
+		var err error
+
+		if len(args) == 0 {
+			targetDir, err = os.Getwd()
+		} else {
+			targetDir, err = filepath.Abs(args[0])
+		}
+
 		if err != nil {
 			return &cannotGetDirectory{constants.CMD_INIT, err}
 		}
 
-		err = lindir.Init(types.Path(wd))
+		err = lindir.Init(types.Path(targetDir))
 		if err != nil {
-			return &initError{wd, err}
+			return &initError{targetDir, err}
 		}
 
 		return nil
