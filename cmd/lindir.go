@@ -1,6 +1,8 @@
 package cmd
 
-import "lindir/common/types"
+import (
+	"lindir/common/types"
+)
 
 type App interface {
 	Init(dir types.Path) error
