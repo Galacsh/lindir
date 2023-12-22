@@ -4,13 +4,13 @@ import (
 	"fmt"
 )
 
-type cannotGetWorkingDir struct {
+type cannotGetDirectory struct {
 	cmd string
 	err error
 }
 
-func (e cannotGetWorkingDir) Error() string {
-	return fmt.Sprintf("failed to get working directory for '%s': %s", e.cmd, e.err.Error())
+func (e cannotGetDirectory) Error() string {
+	return fmt.Sprintf("failed to get directory for '%s': %s", e.cmd, e.err.Error())
 }
 
 type initError struct {

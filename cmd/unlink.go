@@ -17,7 +17,7 @@ var unlinkCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		wd, err := os.Getwd()
 		if err != nil {
-			return &cannotGetWorkingDir{constants.CMD_UNLINK, err}
+			return &cannotGetDirectory{constants.CMD_UNLINK, err}
 		}
 
 		err = lindir.Unlink(types.Path(wd))
@@ -51,3 +51,5 @@ Notice that after making a whole new copy, the directory will not contain
 	description = strings.ReplaceAll(description, "{{APP_DIR}}", constants.APP_DIR)
 	return strings.TrimSpace(description)
 }
+
+// TODO: make commands with no arguments to support at most 1 argument

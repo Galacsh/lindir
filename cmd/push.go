@@ -17,7 +17,7 @@ var pushCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		wd, err := os.Getwd()
 		if err != nil {
-			return &cannotGetWorkingDir{constants.CMD_PUSH, err}
+			return &cannotGetDirectory{constants.CMD_PUSH, err}
 		}
 
 		err = lindir.Push(types.Path(wd))

@@ -17,7 +17,7 @@ var initCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		wd, err := os.Getwd()
 		if err != nil {
-			return &cannotGetWorkingDir{constants.CMD_INIT, err}
+			return &cannotGetDirectory{constants.CMD_INIT, err}
 		}
 
 		err = lindir.Init(types.Path(wd))

@@ -19,7 +19,7 @@ var statusCmd = &cobra.Command{
 	RunE: func(cmd *cobra.Command, args []string) error {
 		wd, err := os.Getwd()
 		if err != nil {
-			return &cannotGetWorkingDir{constants.CMD_STATUS, err}
+			return &cannotGetDirectory{constants.CMD_STATUS, err}
 		}
 
 		added, deleted, err := lindir.Status(types.Path(wd))

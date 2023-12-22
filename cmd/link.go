@@ -22,7 +22,7 @@ var linkCmd = &cobra.Command{
 		if len(args) == 1 {
 			fromDir, err = os.Getwd()
 			if err != nil {
-				return &cannotGetWorkingDir{constants.CMD_LINK, err}
+				return &cannotGetDirectory{constants.CMD_LINK, err}
 			}
 			toDir = args[0]
 		} else if len(args) == 2 {
