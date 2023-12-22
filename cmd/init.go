@@ -3,8 +3,6 @@ package cmd
 import (
 	"lindir/common/constants"
 	"lindir/common/types"
-	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -16,22 +14,22 @@ var initCmd = &cobra.Command{
 	Long:  initCmdLong(),
 	Args:  cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		var targetDir string
+		var targetDir types.Path
 		var err error
 
 		if len(args) == 0 {
-			targetDir, err = os.Getwd()
+			targetDir, err = types.Path(".").Abs()
 		} else {
-			targetDir, err = filepath.Abs(args[0])
+			targetDir, err = types.Path(args[0]).Abs()
 		}
 
 		if err != nil {
 			return &cannotGetDirectory{constants.CMD_INIT, err}
 		}
 
-		err = lindir.Init(types.Path(targetDir))
+		err = lindir.Init(targetDir)
 		if err != nil {
-			return &initError{targetDir, err}
+			return &initError{targetDir.String(), err}
 		}
 
 		return nil

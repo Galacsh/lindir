@@ -3,7 +3,6 @@ package cmd
 import (
 	"lindir/common/constants"
 	"lindir/common/types"
-	"os"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -15,34 +14,27 @@ var linkCmd = &cobra.Command{
 	Long:  linkCmdLong(),
 	Args:  cobra.RangeArgs(1, 2),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		var fromDir, toDir string
-		var err error
+		var from, to types.Path
+		var ferr, terr error
 
 		// assign fromDir and toDir
 		if len(args) == 1 {
-			fromDir, err = os.Getwd()
-			if err != nil {
-				return &cannotGetDirectory{constants.CMD_LINK, err}
-			}
-			toDir = args[0]
-		} else if len(args) == 2 {
-			fromDir = args[0]
-			toDir = args[1]
+			from, ferr = types.Path(".").Abs()
+			to, terr = types.Path(args[0]).Abs()
+		} else {
+			from, ferr = types.Path(args[0]).Abs()
+			to, terr = types.Path(args[1]).Abs()
 		}
 
-		from, err := types.Path(fromDir).Abs()
-		if err != nil {
-			return &linkError{fromDir, toDir, err}
+		if ferr != nil {
+			return &cannotGetDirectory{constants.CMD_LINK, ferr}
+		} else if terr != nil {
+			return &cannotGetDirectory{constants.CMD_LINK, terr}
 		}
 
-		to, err := types.Path(toDir).Abs()
+		err := lindir.Link(from, to)
 		if err != nil {
-			return &linkError{fromDir, toDir, err}
-		}
-
-		err = lindir.Link(from, to)
-		if err != nil {
-			return &linkError{fromDir, toDir, err}
+			return &linkError{from.String(), to.String(), err}
 		}
 
 		return nil

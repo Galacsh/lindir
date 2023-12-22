@@ -3,8 +3,6 @@ package cmd
 import (
 	"lindir/common/constants"
 	"lindir/common/types"
-	"os"
-	"path/filepath"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -16,13 +14,13 @@ var syncCmd = &cobra.Command{
 	Long:  syncCmdLong(),
 	Args:  cobra.MaximumNArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		var targetDir string
+		var targetDir types.Path
 		var err error
 
 		if len(args) == 0 {
-			targetDir, err = os.Getwd()
+			targetDir, err = types.Path(".").Abs()
 		} else {
-			targetDir, err = filepath.Abs(args[0])
+			targetDir, err = types.Path(args[0]).Abs()
 		}
 
 		if err != nil {
@@ -31,7 +29,7 @@ var syncCmd = &cobra.Command{
 
 		err = lindir.Sync(types.Path(targetDir))
 		if err != nil {
-			return &syncError{targetDir, err}
+			return &syncError{targetDir.String(), err}
 		}
 
 		return nil
