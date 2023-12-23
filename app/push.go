@@ -22,7 +22,7 @@ func (l lindir) Push(dir types.Path) error {
 	}
 
 	// get status of the working directory
-	added, deleted, err := status(dir)
+	added, deleted, err := l.Status(dir)
 	if err != nil {
 		return err
 	}

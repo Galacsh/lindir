@@ -17,7 +17,3 @@ func (e notImplementedError) Error() string {
 func (l lindir) Unlink(dir types.Path) error {
 	return &notImplementedError{}
 }
-
-func (l lindir) Sync(dir types.Path) error {
-	return &notImplementedError{}
-}

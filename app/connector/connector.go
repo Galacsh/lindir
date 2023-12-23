@@ -36,15 +36,27 @@ func (c connector) Connections() types.PathSet {
 	return c.connectedPaths
 }
 
-func (c connector) HasConnection(to types.Path) bool {
+func (c connector) IsConnected(to types.Path) bool {
 	return c.connectedPaths.ContainsPath(to)
 }
 
 func (c connector) ErrIfConnected(to types.Path) error {
-	if c.HasConnection(to) {
+	if c.IsConnected(to) {
 		return alreadyConnectedError{c.base, to}
 	} else {
 		return connectedToOtherDirectoriesError{to}
+	}
+}
+
+func (c connector) HasConnection() bool {
+	return len(c.connectedPaths) > 0
+}
+
+func (c connector) ErrIfNoConnections() error {
+	if c.HasConnection() {
+		return nil
+	} else {
+		return noConnectionsError{c.base}
 	}
 }
 

@@ -10,10 +10,6 @@ import (
 )
 
 func (l lindir) Status(dir types.Path) (types.PathSet, types.PathSet, error) {
-	return status(dir)
-}
-
-func status(dir types.Path) (types.PathSet, types.PathSet, error) {
 	// working directory must be initialized
 	err := check.ErrIfNotInitialized(dir)
 	if err != nil {

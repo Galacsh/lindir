@@ -21,3 +21,11 @@ type alreadyConnectedError struct {
 func (e alreadyConnectedError) Error() string {
 	return fmt.Sprintf("'%s' is already linked to '%s'", e.from, e.to)
 }
+
+type noConnectionsError struct {
+	dir types.Path
+}
+
+func (e noConnectionsError) Error() string {
+	return fmt.Sprintf("'%s' has no connections", e.dir)
+}
