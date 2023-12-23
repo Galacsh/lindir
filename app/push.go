@@ -1,20 +1,21 @@
 package app
 
-import "lindir/common/types"
+import (
+	"lindir/app/connect"
+	"lindir/app/setup"
+	"lindir/app/track"
+	"lindir/common/types"
+)
 
 func (l lindir) Push(dir types.Path) error {
 	// working directory must be initialized
-	notInitialized, err := isNotInitialized(dir)
+	err := setup.ErrIfNotInitialized(dir)
 	if err != nil {
 		return err
 	}
 
-	if notInitialized {
-		return &notInitializedError{dir}
-	}
-
 	// get connected directories
-	connector, err := newConnector(dir)
+	connector, err := connect.NewConnector(dir)
 	if err != nil {
 		return err
 	}
@@ -26,15 +27,15 @@ func (l lindir) Push(dir types.Path) error {
 	}
 
 	// initialize tracker
-	tracker, err := newTracker(dir)
+	tracker, err := track.NewTracker(dir)
 	if err != nil {
 		return err
 	}
 
 	// update tracker at the last even if an error occurs
-	defer tracker.save()
+	defer tracker.Save()
 
-	for connection := range connector.connections() {
+	for connection := range connector.Connections() {
 		if connection == dir.String() {
 			continue
 		}
@@ -47,7 +48,7 @@ func (l lindir) Push(dir types.Path) error {
 			if err != nil {
 				return err
 			}
-			tracker.track(file)
+			tracker.Track(file)
 		}
 
 		// delete files that were deleted in the working directory
@@ -58,7 +59,7 @@ func (l lindir) Push(dir types.Path) error {
 			if err != nil {
 				return err
 			}
-			tracker.untrack(file)
+			tracker.Untrack(file)
 		}
 	}
 

@@ -1,4 +1,4 @@
-package app
+package track
 
 import (
 	"lindir/common/constants"
@@ -11,19 +11,14 @@ type tracker struct {
 	tracking types.PathSet
 }
 
-// Creates a new tracker file
-func createTrackerFile(dir types.Path) error {
-	return trackerFileOf(dir).Write(types.PathSet{})
-}
-
 // Returns the tracker file of the given directory
-func trackerFileOf(dir types.Path) types.Path {
+func TrackerFileOf(dir types.Path) types.Path {
 	return dir.Join(constants.TRACKER)
 }
 
 // Returns a new tracker
-func newTracker(dir types.Path) (*tracker, error) {
-	file := trackerFileOf(dir)
+func NewTracker(dir types.Path) (*tracker, error) {
+	file := TrackerFileOf(dir)
 	trackingFiles, err := file.Read()
 	if err != nil {
 		return nil, err
@@ -32,23 +27,23 @@ func newTracker(dir types.Path) (*tracker, error) {
 	return &tracker{dir, file, trackingFiles}, nil
 }
 
-func (t tracker) trackingFiles() types.PathSet {
+func (t tracker) TrackingFiles() types.PathSet {
 	return t.tracking
 }
 
 // Returns true if the given file is being tracked
-func (t tracker) isTracking(file string) bool {
+func (t tracker) IsTracking(file string) bool {
 	return t.tracking.Contains(file)
 }
 
-func (t *tracker) track(file string) {
+func (t *tracker) Track(file string) {
 	t.tracking.Add(file)
 }
 
-func (t *tracker) untrack(file string) {
+func (t *tracker) Untrack(file string) {
 	t.tracking.Remove(file)
 }
 
-func (t tracker) save() error {
+func (t tracker) Save() error {
 	return t.file.Write(t.tracking)
 }

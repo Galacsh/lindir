@@ -1,4 +1,4 @@
-package app
+package ignorepattern
 
 import (
 	"lindir/common/constants"
@@ -14,7 +14,7 @@ func ignorePatternsFileOf(dir types.Path) types.Path {
 	return dir.Join(constants.IGNORE_PATTERNS)
 }
 
-func newIgnorePatterns(dir types.Path) (*ignorePatterns, error) {
+func NewIgnorePatterns(dir types.Path) (*ignorePatterns, error) {
 	file := ignorePatternsFileOf(dir)
 	patterns, err := file.Read()
 	if err != nil {
@@ -24,7 +24,7 @@ func newIgnorePatterns(dir types.Path) (*ignorePatterns, error) {
 	return &ignorePatterns{patterns}, nil
 }
 
-func (i ignorePatterns) match(path string) (bool, error) {
+func (i ignorePatterns) Match(path string) (bool, error) {
 	for pattern := range i.patterns {
 		matched, err := filepath.Match(pattern, path)
 		if err != nil {

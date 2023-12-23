@@ -2,6 +2,9 @@ package app
 
 import (
 	"io/fs"
+	"lindir/app/ignorepattern"
+	"lindir/app/setup"
+	"lindir/app/track"
 	"lindir/common/types"
 	"path/filepath"
 )
@@ -12,23 +15,19 @@ func (l lindir) Status(dir types.Path) (types.PathSet, types.PathSet, error) {
 
 func status(dir types.Path) (types.PathSet, types.PathSet, error) {
 	// working directory must be initialized
-	notInitialized, err := isNotInitialized(dir)
+	err := setup.ErrIfNotInitialized(dir)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	if notInitialized {
-		return nil, nil, &notInitializedError{dir}
-	}
-
 	// initialize tracker
-	tracker, err := newTracker(dir)
+	tracker, err := track.NewTracker(dir)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	// initialize ignore patterns
-	ignorePatterns, err := newIgnorePatterns(dir)
+	ignorePatterns, err := ignorepattern.NewIgnorePatterns(dir)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -47,7 +46,7 @@ func status(dir types.Path) (types.PathSet, types.PathSet, error) {
 		}
 
 		// ignore if it matches any ignore pattern
-		matched, err := ignorePatterns.match(relPath)
+		matched, err := ignorePatterns.Match(relPath)
 		if err != nil {
 			return err
 		}
@@ -65,7 +64,7 @@ func status(dir types.Path) (types.PathSet, types.PathSet, error) {
 			return nil
 		}
 
-		if tracker.isTracking(relPath) {
+		if tracker.IsTracking(relPath) {
 			notDeleted.Add(relPath)
 		} else {
 			added.Add(relPath)
@@ -78,7 +77,7 @@ func status(dir types.Path) (types.PathSet, types.PathSet, error) {
 		return nil, nil, err
 	}
 
-	deleted := tracker.trackingFiles().Difference(notDeleted)
+	deleted := tracker.TrackingFiles().Difference(notDeleted)
 
 	return added, deleted, nil
 }
