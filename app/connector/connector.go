@@ -63,3 +63,11 @@ func (c connector) ErrIfNoConnections() error {
 func (c *connector) Connect(to types.Path) {
 	c.connectedPaths.AddPath(to)
 }
+
+func (c *connector) Disconnect(to types.Path) {
+	c.connectedPaths.RemovePath(to)
+}
+
+func (c connector) Save() error {
+	return c.file.Write(c.connectedPaths)
+}

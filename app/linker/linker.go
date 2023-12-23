@@ -1,6 +1,7 @@
 package linker
 
 import (
+	"io"
 	"lindir/app/connector"
 	"lindir/app/tracker"
 	"lindir/common/types"
@@ -67,5 +68,41 @@ func Link(relPath string, from, to types.Path) error {
 		// return error if different file with same name exists
 		return fileWithSameNameExistsError{toFile}
 	}
+}
 
+func HardLinkToCopy(file types.Path) error {
+	temp, err := copyTemp(file)
+	if err != nil {
+		return err
+	}
+
+	// Remove the original file
+	err = os.Remove(file.String())
+	if err != nil {
+		return err
+	}
+
+	// Rename the copy to the original file name
+	return os.Rename(temp, file.String())
+}
+
+func copyTemp(file types.Path) (string, error) {
+	from, err := os.Open(file.String())
+	if err != nil {
+		return "", err
+	}
+	defer from.Close()
+
+	temp, err := os.CreateTemp("", "*")
+	if err != nil {
+		return "", err
+	}
+	defer temp.Close()
+
+	_, err = io.Copy(temp, from)
+	if err != nil {
+		return "", err
+	}
+
+	return temp.Name(), nil
 }

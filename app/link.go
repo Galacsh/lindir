@@ -41,6 +41,7 @@ func (l lindir) Link(from, to types.Path) error {
 		}
 
 		connector.Connect(to)
+		connector.Save()
 	} else {
 		err = connector.ErrIfConnected(to)
 		if err != nil {
