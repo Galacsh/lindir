@@ -57,7 +57,7 @@ func (p Path) NotExists() (bool, error) {
 }
 
 func (p Path) CreateDir() error {
-	return os.MkdirAll(p.Dir().String(), os.ModePerm)
+	return os.MkdirAll(p.String(), os.ModePerm)
 }
 
 func (p Path) Create() error {
