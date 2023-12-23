@@ -12,20 +12,6 @@ func (ps PathSet) String() string {
 	return paths
 }
 
-func (ps PathSet) Equals(other PathSet) bool {
-	if len(ps) != len(other) {
-		return false
-	}
-
-	for p := range ps {
-		if !other.Contains(p) {
-			return false
-		}
-	}
-
-	return true
-}
-
 func (ps PathSet) Add(s string) {
 	ps[s] = struct{}{}
 }
@@ -61,36 +47,6 @@ func (ps PathSet) Difference(other PathSet) PathSet {
 	}
 
 	return diff
-}
-
-func (ps PathSet) Union(other PathSet) PathSet {
-	union := PathSet{}
-
-	for p := range ps {
-		union.Add(p)
-	}
-
-	for p := range other {
-		union.Add(p)
-	}
-
-	return union
-}
-
-func (ps PathSet) Slice() []string {
-	var paths []string
-	for p := range ps {
-		paths = append(paths, p)
-	}
-	return paths
-}
-
-func (ps PathSet) PathSlice() []Path {
-	var paths []Path
-	for p := range ps {
-		paths = append(paths, Path(p))
-	}
-	return paths
 }
 
 func (ps PathSet) Len() int {

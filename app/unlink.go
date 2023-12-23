@@ -9,6 +9,7 @@ import (
 	"lindir/common/types"
 )
 
+// Unlink 'dir' directory
 func (l lindir) Unlink(dir types.Path) error {
 	err := check.ErrIfNotInitialized(dir)
 	if err != nil {

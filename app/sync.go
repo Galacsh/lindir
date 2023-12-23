@@ -6,6 +6,7 @@ import (
 	"lindir/common/types"
 )
 
+// Push changes in each directory to connected directories
 func (l lindir) Sync(dir types.Path) error {
 	err := check.ErrIfNotInitialized(dir)
 	if err != nil {

@@ -7,6 +7,7 @@ import (
 	"lindir/common/types"
 )
 
+// Initialize 'dir' directory
 func (l lindir) Init(dir types.Path) error {
 	err := check.ErrIfAlreadyInitialized(dir)
 	if err != nil {

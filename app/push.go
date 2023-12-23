@@ -8,6 +8,7 @@ import (
 	"lindir/common/types"
 )
 
+// Push changes in the working directory to connected directories
 func (l lindir) Push(dir types.Path) error {
 	// working directory must be initialized
 	err := check.ErrIfNotInitialized(dir)

@@ -9,6 +9,8 @@ import (
 	"path/filepath"
 )
 
+// Return the status of the directory.
+// The status of the directory is the set of files that are added and the set of files that are deleted.
 func (l lindir) Status(dir types.Path) (types.PathSet, types.PathSet, error) {
 	// working directory must be initialized
 	err := check.ErrIfNotInitialized(dir)

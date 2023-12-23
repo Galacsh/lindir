@@ -6,14 +6,18 @@ import (
 	"lindir/common/types"
 )
 
+// Check if there is no tracker file in the directory
 func NoTrackerFile(dir types.Path) (bool, error) {
 	return tracker.TrackerFileOf(dir).NotExists()
 }
 
+// Check if there is no connector file in the directory
 func NoConnectorFile(dir types.Path) (bool, error) {
 	return connector.ConnectorFileOf(dir).NotExists()
 }
 
+// Check if the directory is not initialized.
+// A directory is not initialized if there is no tracker file or connector file.
 func IsNotInitialized(dir types.Path) (bool, error) {
 	noTracker, err := NoTrackerFile(dir)
 	if err != nil {
@@ -28,6 +32,8 @@ func IsNotInitialized(dir types.Path) (bool, error) {
 	return noTracker || noConnector, nil
 }
 
+// Check if the directory is initialized.
+// A directory is initialized if there is both tracker file and connector file.
 func isInitialized(dir types.Path) (bool, error) {
 	notInitialized, err := IsNotInitialized(dir)
 	if err != nil {
@@ -37,6 +43,8 @@ func isInitialized(dir types.Path) (bool, error) {
 	return !notInitialized, nil
 }
 
+// Return error if the directory is not initialized.
+// A directory is not initialized if there is no tracker file or connector file.
 func ErrIfNotInitialized(dir types.Path) error {
 	notInitialized, err := IsNotInitialized(dir)
 	if err != nil {
@@ -50,6 +58,8 @@ func ErrIfNotInitialized(dir types.Path) error {
 	}
 }
 
+// Return error if the directory is initialized.
+// A directory is initialized if there is both tracker file and connector file.
 func ErrIfAlreadyInitialized(dir types.Path) error {
 	initialized, err := isInitialized(dir)
 	if err != nil {

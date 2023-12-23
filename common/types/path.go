@@ -27,15 +27,11 @@ func (p Path) Abs() (Path, error) {
 	return Path(abs), nil
 }
 
-func (p Path) Base() string {
-	return filepath.Base(p.String())
-}
-
 func (p Path) Dir() Path {
 	return Path(filepath.Dir(p.String()))
 }
 
-func (p Path) Exists() (bool, error) {
+func (p Path) exists() (bool, error) {
 	_, err := os.Stat(p.String())
 
 	if os.IsNotExist(err) {
@@ -48,7 +44,7 @@ func (p Path) Exists() (bool, error) {
 }
 
 func (p Path) NotExists() (bool, error) {
-	exists, err := p.Exists()
+	exists, err := p.exists()
 	if err != nil {
 		return false, err
 	}

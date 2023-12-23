@@ -21,7 +21,8 @@ func CreateTrackerFile(dir types.Path) error {
 	return TrackerFileOf(dir).Write(types.PathSet{})
 }
 
-// Returns a new tracker
+// Returns a new tracker.
+// The tracker contains the paths of the tracking files.
 func NewTracker(dir types.Path) (*tracker, error) {
 	file := TrackerFileOf(dir)
 	trackingFiles, err := file.Read()
@@ -32,6 +33,7 @@ func NewTracker(dir types.Path) (*tracker, error) {
 	return &tracker{dir, file, trackingFiles}, nil
 }
 
+// Returns the tracking files
 func (t tracker) TrackingFiles() types.PathSet {
 	return t.tracking
 }
@@ -41,14 +43,19 @@ func (t tracker) IsTracking(file string) bool {
 	return t.tracking.Contains(file)
 }
 
+// Track the given file.
+// This function does not save the tracker file.
 func (t *tracker) Track(file string) {
 	t.tracking.Add(file)
 }
 
+// Untrack the given file.
+// This function does not save the tracker file.
 func (t *tracker) Untrack(file string) {
 	t.tracking.Remove(file)
 }
 
+// Save tracking files to the tracker file
 func (t tracker) Save() error {
 	return t.file.Write(t.tracking)
 }

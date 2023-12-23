@@ -8,6 +8,7 @@ import (
 	"os"
 )
 
+// Hard link files inside 'from/.lindir' directory to 'to/.lindir' directory
 func LinkAppDir(from, to types.Path) error {
 	trackerFile := tracker.TrackerFileOf(from)
 	err := Link(trackerFile.String(), from, to)
@@ -24,6 +25,7 @@ func LinkAppDir(from, to types.Path) error {
 	return nil
 }
 
+// Hard link tracked files inside 'from' directory to 'to' directory
 func LinkTrackedFiles(from, to types.Path) error {
 	tracker, err := tracker.NewTracker(from)
 	if err != nil {
@@ -40,6 +42,7 @@ func LinkTrackedFiles(from, to types.Path) error {
 	return nil
 }
 
+// Hard link 'from' file to 'to' file
 func Link(relPath string, from, to types.Path) error {
 	fromFile := from.Join(relPath)
 	fromStat, err := os.Stat(fromFile.String())
@@ -70,6 +73,7 @@ func Link(relPath string, from, to types.Path) error {
 	}
 }
 
+// Turn hard link into copy of the file
 func HardLinkToCopy(file types.Path) error {
 	temp, err := copyTemp(file)
 	if err != nil {
@@ -86,6 +90,7 @@ func HardLinkToCopy(file types.Path) error {
 	return os.Rename(temp, file.String())
 }
 
+// Copy the file to a temporary file
 func copyTemp(file types.Path) (string, error) {
 	from, err := os.Open(file.String())
 	if err != nil {
