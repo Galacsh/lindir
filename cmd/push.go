@@ -9,7 +9,7 @@ import (
 )
 
 var pushCmd = &cobra.Command{
-	Use:   constants.CMD_PUSH,
+	Use:   constants.CMD_PUSH + " [<directory>]",
 	Short: pushCmdShort(),
 	Long:  pushCmdLong(),
 	Args:  cobra.MaximumNArgs(1),

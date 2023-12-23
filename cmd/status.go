@@ -11,7 +11,7 @@ import (
 )
 
 var statusCmd = &cobra.Command{
-	Use:   constants.CMD_STATUS,
+	Use:   constants.CMD_STATUS + " [<directory>]",
 	Short: statusCmdShort(),
 	Long:  statusCmdLong(),
 	Args:  cobra.MaximumNArgs(1),

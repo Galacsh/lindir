@@ -9,7 +9,7 @@ import (
 )
 
 var unlinkCmd = &cobra.Command{
-	Use:   constants.CMD_UNLINK,
+	Use:   constants.CMD_UNLINK + " [<directory>]",
 	Short: unlinkCmdShort(),
 	Long:  unlinkCmdLong(),
 	Args:  cobra.MaximumNArgs(1),
@@ -58,5 +58,3 @@ Notice that after making a whole new copy, the directory will not contain
 	description = strings.ReplaceAll(description, "{{APP_DIR}}", constants.APP_DIR)
 	return strings.TrimSpace(description)
 }
-
-// TODO: make commands with no arguments to support at most 1 argument

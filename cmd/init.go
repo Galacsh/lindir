@@ -9,7 +9,7 @@ import (
 )
 
 var initCmd = &cobra.Command{
-	Use:   constants.CMD_INIT,
+	Use:   constants.CMD_INIT + " [<directory>]",
 	Short: initCmdShort(),
 	Long:  initCmdLong(),
 	Args:  cobra.MaximumNArgs(1),

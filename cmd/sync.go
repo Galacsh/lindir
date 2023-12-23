@@ -9,7 +9,7 @@ import (
 )
 
 var syncCmd = &cobra.Command{
-	Use:   constants.CMD_SYNC,
+	Use:   constants.CMD_SYNC + " [<directory>]",
 	Short: syncCmdShort(),
 	Long:  syncCmdLong(),
 	Args:  cobra.MaximumNArgs(1),
