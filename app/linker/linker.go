@@ -2,22 +2,20 @@ package linker
 
 import (
 	"io"
-	"lindir/app/connector"
 	"lindir/app/tracker"
+	"lindir/common/constants"
 	"lindir/common/types"
 	"os"
 )
 
 // Hard link files inside 'from/.lindir' directory to 'to/.lindir' directory
 func LinkAppDir(from, to types.Path) error {
-	trackerFile := tracker.TrackerFileOf(from)
-	err := Link(trackerFile.String(), from, to)
+	err := Link(constants.TRACKER, from, to)
 	if err != nil {
 		return err
 	}
 
-	connectorFile := connector.ConnectorFileOf(to)
-	err = Link(connectorFile.String(), from, to)
+	err = Link(constants.CONNECTOR, from, to)
 	if err != nil {
 		return err
 	}

@@ -66,7 +66,7 @@ func ErrIfAlreadyInitialized(dir types.Path) error {
 		return err
 	}
 
-	if !initialized {
+	if initialized {
 		return &alreadyInitializedError{dir}
 	} else {
 		return nil

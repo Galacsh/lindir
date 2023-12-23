@@ -37,6 +37,20 @@ func (ps PathSet) ContainsPath(p Path) bool {
 	return ps.Contains(p.String())
 }
 
+func (ps PathSet) Union(other PathSet) PathSet {
+	union := PathSet{}
+
+	for p := range ps {
+		union.Add(p)
+	}
+
+	for p := range other {
+		union.Add(p)
+	}
+
+	return union
+}
+
 func (ps PathSet) Difference(other PathSet) PathSet {
 	diff := PathSet{}
 

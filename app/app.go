@@ -4,6 +4,6 @@ package app
 type lindir struct{}
 
 // Return a new lindir object
-func New() lindir {
-	return lindir{}
+func New() *lindir {
+	return &lindir{}
 }

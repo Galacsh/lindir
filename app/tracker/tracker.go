@@ -18,7 +18,8 @@ func TrackerFileOf(dir types.Path) types.Path {
 
 // Creates a new tracker file
 func CreateTrackerFile(dir types.Path) error {
-	return TrackerFileOf(dir).Write(types.PathSet{})
+	trackerFile := TrackerFileOf(dir)
+	return trackerFile.Create()
 }
 
 // Returns a new tracker.

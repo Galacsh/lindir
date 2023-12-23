@@ -18,10 +18,16 @@ func ConnectorFileOf(dir types.Path) types.Path {
 
 // Create a connector file in the directory
 func CreateConnectorFile(dir types.Path) error {
+	connectorFile := ConnectorFileOf(dir)
+	err := connectorFile.Create()
+	if err != nil {
+		return err
+	}
+
 	defaultConnections := types.PathSet{}
 	defaultConnections.AddPath(dir)
 
-	return ConnectorFileOf(dir).Write(defaultConnections)
+	return connectorFile.Write(defaultConnections)
 }
 
 // Return a new connector object.
