@@ -18,7 +18,7 @@ func (ps PathSet) Equals(other PathSet) bool {
 	}
 
 	for p := range ps {
-		if !other.ContainsStr(p) {
+		if !other.Contains(p) {
 			return false
 		}
 	}
@@ -26,37 +26,37 @@ func (ps PathSet) Equals(other PathSet) bool {
 	return true
 }
 
-func (ps PathSet) AddStr(s string) {
+func (ps PathSet) Add(s string) {
 	ps[s] = struct{}{}
 }
 
-func (ps PathSet) Add(p Path) {
-	ps.AddStr(p.String())
+func (ps PathSet) AddPath(p Path) {
+	ps.Add(p.String())
 }
 
-func (ps PathSet) RemoveStr(s string) {
+func (ps PathSet) Remove(s string) {
 	delete(ps, s)
 }
 
-func (ps PathSet) Remove(p Path) {
-	ps.RemoveStr(p.String())
+func (ps PathSet) RemovePath(p Path) {
+	ps.Remove(p.String())
 }
 
-func (ps PathSet) ContainsStr(s string) bool {
+func (ps PathSet) Contains(s string) bool {
 	_, ok := ps[s]
 	return ok
 }
 
-func (ps PathSet) Contains(p Path) bool {
-	return ps.ContainsStr(p.String())
+func (ps PathSet) ContainsPath(p Path) bool {
+	return ps.Contains(p.String())
 }
 
 func (ps PathSet) Difference(other PathSet) PathSet {
 	diff := PathSet{}
 
 	for p := range ps {
-		if !other.ContainsStr(p) {
-			diff.AddStr(p)
+		if !other.Contains(p) {
+			diff.Add(p)
 		}
 	}
 
@@ -67,17 +67,17 @@ func (ps PathSet) Union(other PathSet) PathSet {
 	union := PathSet{}
 
 	for p := range ps {
-		union.AddStr(p)
+		union.Add(p)
 	}
 
 	for p := range other {
-		union.AddStr(p)
+		union.Add(p)
 	}
 
 	return union
 }
 
-func (ps PathSet) StrSlice() []string {
+func (ps PathSet) Slice() []string {
 	var paths []string
 	for p := range ps {
 		paths = append(paths, p)
@@ -85,7 +85,7 @@ func (ps PathSet) StrSlice() []string {
 	return paths
 }
 
-func (ps PathSet) Slice() []Path {
+func (ps PathSet) PathSlice() []Path {
 	var paths []Path
 	for p := range ps {
 		paths = append(paths, Path(p))

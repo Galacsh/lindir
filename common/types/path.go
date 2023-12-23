@@ -98,7 +98,7 @@ func (p Path) Read() (PathSet, error) {
 		if text == "" || text[0] == '#' {
 			continue
 		}
-		paths.AddStr(text)
+		paths.Add(text)
 	}
 
 	return paths, file.Close()
