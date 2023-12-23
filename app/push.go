@@ -1,21 +1,21 @@
 package app
 
 import (
-	"lindir/app/connect"
-	"lindir/app/setup"
-	"lindir/app/track"
+	"lindir/app/connector"
+	"lindir/app/initializer"
+	"lindir/app/tracker"
 	"lindir/common/types"
 )
 
 func (l lindir) Push(dir types.Path) error {
 	// working directory must be initialized
-	err := setup.ErrIfNotInitialized(dir)
+	err := initializer.ErrIfNotInitialized(dir)
 	if err != nil {
 		return err
 	}
 
 	// get connected directories
-	connector, err := connect.NewConnector(dir)
+	connector, err := connector.NewConnector(dir)
 	if err != nil {
 		return err
 	}
@@ -27,7 +27,7 @@ func (l lindir) Push(dir types.Path) error {
 	}
 
 	// initialize tracker
-	tracker, err := track.NewTracker(dir)
+	tracker, err := tracker.NewTracker(dir)
 	if err != nil {
 		return err
 	}

@@ -1,25 +1,25 @@
 package app
 
 import (
-	"lindir/app/setup"
+	"lindir/app/initializer"
 	"lindir/common/types"
 )
 
 func (l lindir) Init(dir types.Path) error {
-	err := setup.ErrIfAlreadyInitialized(dir)
+	err := initializer.ErrIfAlreadyInitialized(dir)
 	if err != nil {
 		return err
 	}
 
-	err = setup.CreateAppDir(dir)
+	err = initializer.CreateAppDir(dir)
 	if err != nil {
 		return err
 	}
 
-	err = setup.CreateTrackerFile(dir)
+	err = initializer.CreateTrackerFile(dir)
 	if err != nil {
 		return err
 	}
 
-	return setup.CreateConnectorFile(dir)
+	return initializer.CreateConnectorFile(dir)
 }

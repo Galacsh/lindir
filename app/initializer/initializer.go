@@ -1,8 +1,8 @@
-package setup
+package initializer
 
 import (
-	"lindir/app/connect"
-	"lindir/app/track"
+	"lindir/app/connector"
+	"lindir/app/tracker"
 	"lindir/common/constants"
 	"lindir/common/types"
 )
@@ -19,20 +19,20 @@ func CreateConnectorFile(dir types.Path) error {
 	defaultConnections := types.PathSet{}
 	defaultConnections.AddPath(dir)
 
-	return connect.ConnectorFileOf(dir).Write(defaultConnections)
+	return connector.ConnectorFileOf(dir).Write(defaultConnections)
 }
 
 // Creates a new tracker file
 func CreateTrackerFile(dir types.Path) error {
-	return track.TrackerFileOf(dir).Write(types.PathSet{})
+	return tracker.TrackerFileOf(dir).Write(types.PathSet{})
 }
 
 func noTrackerFile(dir types.Path) (bool, error) {
-	return track.TrackerFileOf(dir).NotExists()
+	return tracker.TrackerFileOf(dir).NotExists()
 }
 
 func noConnectorFile(dir types.Path) (bool, error) {
-	return connect.ConnectorFileOf(dir).NotExists()
+	return connector.ConnectorFileOf(dir).NotExists()
 }
 
 func IsNotInitialized(dir types.Path) (bool, error) {

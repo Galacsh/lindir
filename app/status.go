@@ -3,8 +3,8 @@ package app
 import (
 	"io/fs"
 	"lindir/app/ignorepattern"
-	"lindir/app/setup"
-	"lindir/app/track"
+	"lindir/app/initializer"
+	"lindir/app/tracker"
 	"lindir/common/types"
 	"path/filepath"
 )
@@ -15,13 +15,13 @@ func (l lindir) Status(dir types.Path) (types.PathSet, types.PathSet, error) {
 
 func status(dir types.Path) (types.PathSet, types.PathSet, error) {
 	// working directory must be initialized
-	err := setup.ErrIfNotInitialized(dir)
+	err := initializer.ErrIfNotInitialized(dir)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	// initialize tracker
-	tracker, err := track.NewTracker(dir)
+	tracker, err := tracker.NewTracker(dir)
 	if err != nil {
 		return nil, nil, err
 	}

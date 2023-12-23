@@ -1,4 +1,4 @@
-package track
+package tracker
 
 import (
 	"lindir/common/constants"
