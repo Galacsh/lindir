@@ -6,9 +6,9 @@ import (
 )
 
 type tracker struct {
-	base          types.Path
-	file          types.Path
-	trackingFiles types.PathSet
+	base     types.Path
+	file     types.Path
+	tracking types.PathSet
 }
 
 // Creates a new tracker file
@@ -32,11 +32,23 @@ func newTracker(dir types.Path) (*tracker, error) {
 	return &tracker{dir, file, trackingFiles}, nil
 }
 
-// Returns true if the given file is being tracked
-func (t tracker) isTracking(file string) bool {
-	return t.trackingFiles.Contains(file)
+func (t tracker) trackingFiles() types.PathSet {
+	return t.tracking
 }
 
-func (t tracker) difference(files types.PathSet) types.PathSet {
-	return t.trackingFiles.Difference(files)
+// Returns true if the given file is being tracked
+func (t tracker) isTracking(file string) bool {
+	return t.tracking.Contains(file)
+}
+
+func (t *tracker) track(file string) {
+	t.tracking.Add(file)
+}
+
+func (t *tracker) untrack(file string) {
+	t.tracking.Remove(file)
+}
+
+func (t tracker) save() error {
+	return t.file.Write(t.tracking)
 }

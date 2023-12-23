@@ -6,8 +6,8 @@ import (
 )
 
 type connector struct {
-	file        types.Path
-	connections types.PathSet
+	file           types.Path
+	connectedPaths types.PathSet
 }
 
 func createConnectorFile(dir types.Path) error {
@@ -31,10 +31,14 @@ func newConnector(dir types.Path) (*connector, error) {
 	return &connector{connectorFile, connections}, nil
 }
 
-func (c connector) hasConnection(to types.Path) bool {
-	return c.connections.ContainsPath(to)
+func (c connector) connections() types.PathSet {
+	return c.connectedPaths
 }
 
-func (c connector) connect(to types.Path) {
-	c.connections.AddPath(to)
+func (c connector) hasConnection(to types.Path) bool {
+	return c.connectedPaths.ContainsPath(to)
+}
+
+func (c *connector) connect(to types.Path) {
+	c.connectedPaths.AddPath(to)
 }

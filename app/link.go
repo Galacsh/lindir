@@ -61,3 +61,7 @@ func linkAppDir(from, to types.Path) error {
 func linkTrackedFiles(from, to types.Path) error {
 	return &notImplementedError{}
 }
+
+func linkFile(relPath string, from, to types.Path) error {
+	return &notImplementedError{}
+}

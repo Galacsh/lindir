@@ -7,6 +7,10 @@ import (
 )
 
 func (l lindir) Status(dir types.Path) (types.PathSet, types.PathSet, error) {
+	return status(dir)
+}
+
+func status(dir types.Path) (types.PathSet, types.PathSet, error) {
 	// working directory must be initialized
 	notInitialized, err := isNotInitialized(dir)
 	if err != nil {
@@ -23,8 +27,8 @@ func (l lindir) Status(dir types.Path) (types.PathSet, types.PathSet, error) {
 		return nil, nil, err
 	}
 
-	// get ignore patterns
-	ignorePatterns, err := ignorePatternsOf(dir)
+	// initialize ignore patterns
+	ignorePatterns, err := newIgnorePatterns(dir)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -43,19 +47,17 @@ func (l lindir) Status(dir types.Path) (types.PathSet, types.PathSet, error) {
 		}
 
 		// ignore if it matches any ignore pattern
-		for ignore := range ignorePatterns {
-			matched, err := filepath.Match(ignore, relPath)
-			if err != nil {
-				return err
+		matched, err := ignorePatterns.match(relPath)
+		if err != nil {
+			return err
+		}
+
+		if matched {
+			if d.IsDir() {
+				return fs.SkipDir
 			}
 
-			if matched {
-				if d.IsDir() {
-					return fs.SkipDir
-				}
-
-				return nil
-			}
+			return nil
 		}
 
 		// nothing to do if it's directory
@@ -76,7 +78,7 @@ func (l lindir) Status(dir types.Path) (types.PathSet, types.PathSet, error) {
 		return nil, nil, err
 	}
 
-	deleted := tracker.difference(notDeleted)
+	deleted := tracker.trackingFiles().Difference(notDeleted)
 
 	return added, deleted, nil
 }
