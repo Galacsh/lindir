@@ -12,13 +12,10 @@ func (l lindir) Init(dir types.Path) error {
 		if err = createAppDir(dir); err != nil {
 			return err
 		}
-		if err = createTracker(dir); err != nil {
+		if err = createTrackerFile(dir); err != nil {
 			return err
 		}
-		if err = createConnector(dir); err != nil {
-			return err
-		}
-		if err = initConnector(dir); err != nil {
+		if err = createConnectorFile(dir); err != nil {
 			return err
 		}
 	} else {

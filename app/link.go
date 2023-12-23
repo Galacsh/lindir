@@ -21,6 +21,12 @@ func (l lindir) Link(from, to types.Path) error {
 		return err
 	}
 
+	// initialize connector based on 'from'
+	connector, err := newConnector(from)
+	if err != nil {
+		return err
+	}
+
 	if toNotInitialized {
 		// link 'from' to 'to'
 		err = linkAppDir(from, to)
@@ -33,20 +39,19 @@ func (l lindir) Link(from, to types.Path) error {
 			return err
 		}
 
-		return connect(from, to)
+		connector.connect(to)
 	} else {
 		// do nothing if 'to' is already initialized
-		connected, err := areConnected(from, to)
-		if err != nil {
-			return err
-		}
+		isConnected := connector.hasConnection(to)
 
-		if connected {
+		if isConnected {
 			return alreadyConnectedError{from, to}
 		} else {
 			return connectedToOtherDirectoriesError{to}
 		}
 	}
+
+	return nil
 }
 
 func linkAppDir(from, to types.Path) error {

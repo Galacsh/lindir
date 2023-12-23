@@ -17,7 +17,7 @@ func (l lindir) Status(dir types.Path) (types.PathSet, types.PathSet, error) {
 		return nil, nil, &notInitializedError{dir}
 	}
 
-	// get tracked files
+	// initialize tracker
 	tracker, err := newTracker(dir)
 	if err != nil {
 		return nil, nil, err
@@ -76,8 +76,7 @@ func (l lindir) Status(dir types.Path) (types.PathSet, types.PathSet, error) {
 		return nil, nil, err
 	}
 
-	// remaining files in 'trackedFiles' are deletedFiles
-	deleted := tracker.files.Difference(notDeleted)
+	deleted := tracker.difference(notDeleted)
 
 	return added, deleted, nil
 }
