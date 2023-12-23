@@ -14,10 +14,6 @@ func (e notImplementedError) Error() string {
 	return "not implemented"
 }
 
-func (l lindir) Init(dir types.Path) error {
-	return &notImplementedError{}
-}
-
 func (l lindir) Status(dir types.Path) (types.PathSet, types.PathSet, error) {
 	return nil, nil, &notImplementedError{}
 }
