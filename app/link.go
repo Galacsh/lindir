@@ -3,6 +3,7 @@ package app
 import (
 	"lindir/app/check"
 	"lindir/app/connector"
+	"lindir/app/linker"
 	"lindir/common/types"
 )
 
@@ -29,12 +30,12 @@ func (l lindir) Link(from, to types.Path) error {
 
 	if notInitialized {
 		// link 'from' to 'to'
-		err = linkAppDir(from, to)
+		err = linker.LinkAppDir(from, to)
 		if err != nil {
 			return err
 		}
 
-		err = linkTrackedFiles(from, to)
+		err = linker.LinkTrackedFiles(from, to)
 		if err != nil {
 			return err
 		}
@@ -48,16 +49,4 @@ func (l lindir) Link(from, to types.Path) error {
 	}
 
 	return nil
-}
-
-func linkAppDir(from, to types.Path) error {
-	return &notImplementedError{}
-}
-
-func linkTrackedFiles(from, to types.Path) error {
-	return &notImplementedError{}
-}
-
-func linkFile(relPath string, from, to types.Path) error {
-	return &notImplementedError{}
 }

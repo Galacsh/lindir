@@ -3,6 +3,7 @@ package app
 import (
 	"lindir/app/check"
 	"lindir/app/connector"
+	"lindir/app/linker"
 	"lindir/app/tracker"
 	"lindir/common/types"
 )
@@ -44,7 +45,7 @@ func (l lindir) Push(dir types.Path) error {
 
 		// create hard links for new files
 		for file := range added {
-			err := linkFile(file, dir, connectedDir)
+			err := linker.Link(file, dir, connectedDir)
 			if err != nil {
 				return err
 			}
