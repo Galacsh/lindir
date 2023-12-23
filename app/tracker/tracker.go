@@ -16,6 +16,11 @@ func TrackerFileOf(dir types.Path) types.Path {
 	return dir.Join(constants.TRACKER)
 }
 
+// Creates a new tracker file
+func CreateTrackerFile(dir types.Path) error {
+	return TrackerFileOf(dir).Write(types.PathSet{})
+}
+
 // Returns a new tracker
 func NewTracker(dir types.Path) (*tracker, error) {
 	file := TrackerFileOf(dir)

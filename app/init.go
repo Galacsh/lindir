@@ -1,25 +1,41 @@
 package app
 
 import (
-	"lindir/app/initializer"
+	"lindir/app/check"
+	"lindir/app/connector"
+	"lindir/app/tracker"
 	"lindir/common/types"
 )
 
 func (l lindir) Init(dir types.Path) error {
-	err := initializer.ErrIfAlreadyInitialized(dir)
+	err := check.ErrIfAlreadyInitialized(dir)
 	if err != nil {
 		return err
 	}
 
-	err = initializer.CreateAppDir(dir)
+	noTracker, err := check.NoTrackerFile(dir)
 	if err != nil {
 		return err
 	}
 
-	err = initializer.CreateTrackerFile(dir)
+	if noTracker {
+		err = tracker.CreateTrackerFile(dir)
+		if err != nil {
+			return err
+		}
+	}
+
+	noConnector, err := check.NoConnectorFile(dir)
 	if err != nil {
 		return err
 	}
 
-	return initializer.CreateConnectorFile(dir)
+	if noConnector {
+		err = connector.CreateConnectorFile(dir)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }

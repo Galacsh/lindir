@@ -15,6 +15,13 @@ func ConnectorFileOf(dir types.Path) types.Path {
 	return dir.Join(constants.CONNECTOR)
 }
 
+func CreateConnectorFile(dir types.Path) error {
+	defaultConnections := types.PathSet{}
+	defaultConnections.AddPath(dir)
+
+	return ConnectorFileOf(dir).Write(defaultConnections)
+}
+
 func NewConnector(dir types.Path) (*connector, error) {
 	connectorFile := ConnectorFileOf(dir)
 	connections, err := connectorFile.Read()

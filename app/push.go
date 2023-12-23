@@ -1,15 +1,15 @@
 package app
 
 import (
+	"lindir/app/check"
 	"lindir/app/connector"
-	"lindir/app/initializer"
 	"lindir/app/tracker"
 	"lindir/common/types"
 )
 
 func (l lindir) Push(dir types.Path) error {
 	// working directory must be initialized
-	err := initializer.ErrIfNotInitialized(dir)
+	err := check.ErrIfNotInitialized(dir)
 	if err != nil {
 		return err
 	}

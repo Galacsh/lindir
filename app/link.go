@@ -1,8 +1,8 @@
 package app
 
 import (
+	"lindir/app/check"
 	"lindir/app/connector"
-	"lindir/app/initializer"
 	"lindir/common/types"
 )
 
@@ -10,13 +10,13 @@ import (
 // Hard linking directories means just connecting both directories.
 func (l lindir) Link(from, to types.Path) error {
 	// 'from' must be initialized
-	err := initializer.ErrIfNotInitialized(from)
+	err := check.ErrIfNotInitialized(from)
 	if err != nil {
 		return err
 	}
 
 	// 'to' must not be initialized
-	notInitialized, err := initializer.IsNotInitialized(to)
+	notInitialized, err := check.IsNotInitialized(to)
 	if err != nil {
 		return err
 	}
