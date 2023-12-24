@@ -34,7 +34,7 @@ var statusCmd = &cobra.Command{
 			return &statusError{targetDir.String(), err}
 		}
 
-		printStatus(added, deleted)
+		afterStatus(added, deleted)
 
 		return nil
 	},
@@ -62,9 +62,9 @@ Files that are going to be pushed:
 	return strings.TrimSpace(description)
 }
 
-func printStatus(added types.PathSet, deleted types.PathSet) {
+func afterStatus(added types.PathSet, deleted types.PathSet) {
 	if len(added) == 0 && len(deleted) == 0 {
-		fmt.Println("Nothing to push, working directory clean")
+		fmt.Println("Nothing to push, working directory clean.")
 		return
 	}
 

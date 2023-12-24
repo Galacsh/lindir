@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"lindir/common/constants"
 	"lindir/common/types"
 	"strings"
@@ -31,6 +32,8 @@ var initCmd = &cobra.Command{
 		if err != nil {
 			return &initError{targetDir.String(), err}
 		}
+
+		afterInit()
 
 		return nil
 	},
@@ -65,4 +68,8 @@ Inside the '{{APP_DIR}}' directory, you will find two files:
 	description = strings.ReplaceAll(description, "{{APP}}", constants.APP)
 	description = strings.ReplaceAll(description, "{{APP_DIR}}", constants.APP_DIR)
 	return strings.TrimSpace(description)
+}
+
+func afterInit() {
+	fmt.Println("Successfully initialized.")
 }

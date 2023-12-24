@@ -9,7 +9,7 @@ import (
 )
 
 // Push changes in the working directory to connected directories
-func (l lindir) Push(dir types.Path) error {
+func (l lindir) Push(dir types.Path, added, deleted types.PathSet) error {
 	// working directory must be initialized
 	err := check.ErrIfNotInitialized(dir)
 	if err != nil {
@@ -18,12 +18,6 @@ func (l lindir) Push(dir types.Path) error {
 
 	// get connected directories
 	connector, err := connector.NewConnector(dir)
-	if err != nil {
-		return err
-	}
-
-	// get status of the working directory
-	added, deleted, err := l.Status(dir)
 	if err != nil {
 		return err
 	}

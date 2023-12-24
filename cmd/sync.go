@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"lindir/common/constants"
 	"lindir/common/types"
 	"strings"
@@ -32,6 +33,8 @@ var syncCmd = &cobra.Command{
 			return &syncError{targetDir.String(), err}
 		}
 
+		afterSync(targetDir)
+
 		return nil
 	},
 }
@@ -58,4 +61,8 @@ use '{{CMD}} {{CMD_PUSH}}' instead.
 	description = strings.ReplaceAll(description, "{{CMD}}", constants.CMD)
 	description = strings.ReplaceAll(description, "{{CMD_PUSH}}", constants.CMD_PUSH)
 	return strings.TrimSpace(description)
+}
+
+func afterSync(targetDir types.Path) {
+	fmt.Println("Successfully synchronized.")
 }

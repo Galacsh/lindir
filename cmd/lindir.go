@@ -9,7 +9,7 @@ type App interface {
 	Status(dir types.Path) (types.PathSet, types.PathSet, error)
 	Link(fromDir, toDir types.Path) error
 	Unlink(dir types.Path) error
-	Push(dir types.Path) error
+	Push(dir types.Path, added, deleted types.PathSet) error
 	Sync(dir types.Path) error
 }
 

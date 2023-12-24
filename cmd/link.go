@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"lindir/common/constants"
 	"lindir/common/types"
 	"strings"
@@ -37,6 +38,8 @@ var linkCmd = &cobra.Command{
 			return &linkError{from.String(), to.String(), err}
 		}
 
+		afterLink(from, to)
+
 		return nil
 	},
 }
@@ -59,4 +62,8 @@ Arguments:
 * <to>: The directory to link to.
 `
 	return strings.TrimSpace(description)
+}
+
+func afterLink(from types.Path, to types.Path) {
+	fmt.Printf("Linked '%s' to '%s'.\n", from, to)
 }

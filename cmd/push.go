@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"lindir/common/constants"
 	"lindir/common/types"
 	"strings"
@@ -27,10 +28,17 @@ var pushCmd = &cobra.Command{
 			return &cannotGetDirectory{constants.CMD_PUSH, err}
 		}
 
-		err = lindir.Push(types.Path(targetDir))
+		added, deleted, err := lindir.Status(types.Path(targetDir))
 		if err != nil {
 			return &pushError{targetDir.String(), err}
 		}
+
+		err = lindir.Push(types.Path(targetDir), added, deleted)
+		if err != nil {
+			return &pushError{targetDir.String(), err}
+		}
+
+		afterPush(targetDir, added.Len(), deleted.Len())
 
 		return nil
 	},
@@ -58,4 +66,13 @@ To sync directories(bi-directional), use '{{CMD}} {{CMD_SYNC}}' instead.
 	description = strings.ReplaceAll(description, "{{CMD_SYNC}}", constants.CMD_SYNC)
 	return strings.TrimSpace(description)
 
+}
+
+func afterPush(targetDir types.Path, added, deleted int) {
+	if added == 0 && deleted == 0 {
+		fmt.Printf("Nothing to push to linked directories.\n")
+		return
+	}
+
+	fmt.Printf("Added %d files and deleted %d files in linked directories.\n", added, deleted)
 }

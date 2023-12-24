@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"lindir/common/constants"
 	"lindir/common/types"
 	"strings"
@@ -32,6 +33,8 @@ var unlinkCmd = &cobra.Command{
 			return &unlinkError{targetDir.String(), err}
 		}
 
+		afterUnlink(targetDir)
+
 		return nil
 	},
 }
@@ -57,4 +60,8 @@ Notice that after making a whole new copy, the directory will not contain
 
 	description = strings.ReplaceAll(description, "{{APP_DIR}}", constants.APP_DIR)
 	return strings.TrimSpace(description)
+}
+
+func afterUnlink(targetDir types.Path) {
+	fmt.Printf("Unlinked '%s'.\n", targetDir.String())
 }

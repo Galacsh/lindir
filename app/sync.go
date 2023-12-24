@@ -26,7 +26,12 @@ func (l lindir) Sync(dir types.Path) error {
 
 	// push files to connected directories
 	for connection := range connector.Connections() {
-		err = l.Push(types.Path(connection))
+		added, deleted, err := l.Status(types.Path(connection))
+		if err != nil {
+			return err
+		}
+
+		err = l.Push(types.Path(connection), added, deleted)
 		if err != nil {
 			return err
 		}
