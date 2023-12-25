@@ -20,7 +20,7 @@ Lindir allows you to mimic directory linking through a **Git-inspired approach**
 ### Step 1: Clone this repository
 
 ```shell
-git clone <this repository>
+git clone https://github.com/Galacsh/lindir.git
 ```
 
 ### Step 2: Install Lindir
