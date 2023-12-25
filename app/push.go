@@ -21,6 +21,7 @@ func (l lindir) Push(dir types.Path, added, deleted types.PathSet) error {
 	if err != nil {
 		return err
 	}
+	connections := connector.Connections()
 
 	// initialize tracker
 	tracker, err := tracker.NewTracker(dir)
@@ -31,32 +32,36 @@ func (l lindir) Push(dir types.Path, added, deleted types.PathSet) error {
 	// update tracker at the last even if an error occurs
 	defer tracker.Save()
 
-	for connection := range connector.Connections() {
-		if connection == dir.String() {
-			continue
-		}
+	// delete files in connected directories
+	for file := range deleted {
+		for connection := range connections {
+			// do not delete files in the base directory
+			if connection == dir.String() {
+				continue
+			}
 
-		connectedDir := types.Path(connection)
-
-		// create hard links for new files
-		for file := range added {
-			err := linker.Link(file, dir, connectedDir)
+			err = types.Path(connection).Join(file).Remove()
 			if err != nil {
 				return err
 			}
-			tracker.Track(file)
 		}
+		tracker.Untrack(file)
+	}
 
-		// delete files that were deleted in the working directory
-		for file := range deleted {
-			fileToDelete := connectedDir.Join(file)
+	// add files in connected directories
+	for file := range added {
+		for connection := range connections {
+			// do not add files in the base directory
+			if connection == dir.String() {
+				continue
+			}
 
-			err = fileToDelete.Remove()
+			err = linker.Link(file, dir, types.Path(connection))
 			if err != nil {
 				return err
 			}
-			tracker.Untrack(file)
 		}
+		tracker.Track(file)
 	}
 
 	return nil
