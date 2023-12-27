@@ -38,6 +38,11 @@ func (l lindir) Status(dir types.Path) (types.PathSet, types.PathSet, error) {
 			return err
 		}
 
+		// ignore if it's the directory itself
+		if dir.String() == path {
+			return nil
+		}
+
 		relPath, err := filepath.Rel(dir.String(), path)
 		if err != nil {
 			return err
