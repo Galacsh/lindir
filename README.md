@@ -150,7 +150,7 @@ If the directory is not specified, the current directory will be used.
 
 ## Ignore files
 
-You can ignore files by creating a `.lindirignore` file in the directory. This file uses the pattern syntax of Go language's [filepath.Match](https://pkg.go.dev/path/filepath#Match).
+You can ignore files by creating a `.lindirignore` file in the directory. This file uses the pattern syntax of `.gitignore`. See [gitignore](https://git-scm.com/docs/gitignore#_pattern_format) for more information.
 
 > [!TIP]
 > Add `.git` directory to `.lindirignore` file to ignore Git files.

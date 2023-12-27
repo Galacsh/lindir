@@ -47,6 +47,7 @@ func (l lindir) Status(dir types.Path) (types.PathSet, types.PathSet, error) {
 		if err != nil {
 			return err
 		}
+		relPath = filepath.ToSlash(relPath)
 
 		// ignore if it matches any ignore pattern
 		matched, err := ignorePatterns.Match(relPath)
