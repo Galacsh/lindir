@@ -148,9 +148,23 @@ This command will **disconnect** the specified directory from all connected dire
 
 If the directory is not specified, the current directory will be used.
 
+### `retrack`
+
+Remove ignored files from the tracker file.
+
+```shell
+lindir retrack [<directory>]
+```
+
+This command will remove ignored files from the tracker file. This is useful when you updated the `.lindirignore` file to ignore already tracked files.
+
+If the directory is not specified, the current directory will be used.
+
 ## Ignore files
 
 You can ignore files by creating a `.lindirignore` file in the directory. This file uses the pattern syntax of `.gitignore`. See [gitignore](https://git-scm.com/docs/gitignore#_pattern_format) for more information.
 
 > [!TIP]
 > Add `.git` directory to `.lindirignore` file to ignore Git files.
+
+If you updated the `.lindirignore` file to ignore already tracked files, you need to run `retrack` command to update the tracked files.

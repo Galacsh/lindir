@@ -67,3 +67,12 @@ type unlinkError struct {
 func (e unlinkError) Error() string {
 	return fmt.Sprintf("failed to unlink '%s': %s", e.dir, e.err.Error())
 }
+
+type retrackError struct {
+	dir string
+	err error
+}
+
+func (e retrackError) Error() string {
+	return fmt.Sprintf("failed to retrack '%s': %s", e.dir, e.err.Error())
+}

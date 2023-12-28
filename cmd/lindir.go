@@ -11,6 +11,7 @@ type App interface {
 	Unlink(dir types.Path) error
 	Push(dir types.Path, added, deleted types.PathSet) error
 	Sync(dir types.Path) error
+	Retrack(dir types.Path) (int, error)
 }
 
 var lindir App
