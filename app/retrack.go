@@ -31,12 +31,12 @@ func (l lindir) Retrack(dir types.Path) (int, error) {
 
 	ignored := 0
 	for tracked := range tracker.TrackingFiles() {
-		matched, err := ignorePatterns.Match(tracked)
+		shouldIgnore, err := ignorePatterns.ShouldIgnore(tracked)
 		if err != nil {
 			return ignored, err
 		}
 
-		if matched {
+		if shouldIgnore {
 			tracker.Untrack(tracked)
 			ignored++
 		}

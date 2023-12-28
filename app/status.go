@@ -50,12 +50,12 @@ func (l lindir) Status(dir types.Path) (types.PathSet, types.PathSet, error) {
 		relPath = filepath.ToSlash(relPath)
 
 		// ignore if it matches any ignore pattern
-		matched, err := ignorePatterns.Match(relPath)
+		shouldIgnore, err := ignorePatterns.ShouldIgnore(relPath)
 		if err != nil {
 			return err
 		}
 
-		if matched {
+		if shouldIgnore {
 			if d.IsDir() {
 				return fs.SkipDir
 			}

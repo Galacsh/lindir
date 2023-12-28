@@ -11,6 +11,14 @@ type ignorePattern struct {
 	parts          []string
 }
 
+func (p ignorePattern) String() string {
+	if p.negate {
+		return "[!]" + strings.Join(p.parts, "/")
+	} else {
+		return strings.Join(p.parts, "/")
+	}
+}
+
 func newIgnorePattern(pattern string) *ignorePattern {
 	pattern = sanitizePattern(pattern)
 
@@ -43,16 +51,7 @@ func handleLeadingSlash(pattern string) (bool, string) {
 	return false, "**/" + pattern
 }
 
-func (p ignorePattern) match(path string) (bool, error) {
-	if p.negate {
-		matched, err := p.matchParts(path)
-		return !matched, err
-	}
-
-	return p.matchParts(path)
-}
-
-func (p ignorePattern) matchParts(fullPath string) (bool, error) {
+func (p ignorePattern) match(fullPath string) (bool, error) {
 	if p.allAreDoubleAsterisk() {
 		return true, nil
 	}
@@ -82,6 +81,10 @@ func (p ignorePattern) matchParts(fullPath string) (bool, error) {
 		} else {
 			// else, use indexOf to find the next path that matches the next pattern
 			partsIdx++
+			if partsIdx >= len(p.parts) {
+				return true, nil
+			}
+
 			pathsIdx, err = indexOf(paths, p.parts[partsIdx], pathsIdx)
 			if err != nil {
 				return false, err

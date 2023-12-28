@@ -13,7 +13,7 @@ type ignorePatterns struct {
 // Return a new ignore patterns object.
 // The ignore patterns object contains the patterns of the ignore patterns file.
 func NewIgnorePatterns(dir types.Path) (*ignorePatterns, error) {
-	defaultPatterns := make(types.PathSet)
+	defaultPatterns := types.Paths{}
 	defaultPatterns.Add(constants.APP_DIR)
 
 	file := ignorePatternsFileOf(dir)
@@ -30,22 +30,22 @@ func NewIgnorePatterns(dir types.Path) (*ignorePatterns, error) {
 		return &ignorePatterns{converted}, nil
 	}
 
-	patterns, err := file.Read()
+	patterns, err := file.ReadPaths()
 	if err != nil {
 		return nil, err
 	}
 
-	compiled, err := convertPatterns(defaultPatterns.Union(patterns))
+	compiled, err := convertPatterns(defaultPatterns.Concat(patterns))
 	if err != nil {
 		return nil, err
 	}
 	return &ignorePatterns{compiled}, nil
 }
 
-func convertPatterns(patterns types.PathSet) ([]ignorePattern, error) {
+func convertPatterns(patterns types.Paths) ([]ignorePattern, error) {
 	converted := make([]ignorePattern, 0, len(patterns))
-	for pattern := range patterns {
-		converted = append(converted, *newIgnorePattern(pattern))
+	for _, pattern := range patterns {
+		converted = append(converted, *newIgnorePattern(pattern.String()))
 	}
 
 	return converted, nil
@@ -57,13 +57,23 @@ func ignorePatternsFileOf(dir types.Path) types.Path {
 }
 
 // Check if the path matches any of the patterns
-func (i ignorePatterns) Match(path string) (bool, error) {
+func (i ignorePatterns) ShouldIgnore(path string) (bool, error) {
+	ignore := false
+
 	for _, pattern := range i.patterns {
 		matched, err := pattern.match(path)
-		if err != nil || matched {
-			return matched, err
+
+		if err != nil {
+			return false, err
+		}
+
+		// on negation, excluded by previous patterns should be included again
+		if matched && pattern.negate {
+			ignore = false
+		} else {
+			ignore = ignore || matched
 		}
 	}
 
-	return false, nil
+	return ignore, nil
 }

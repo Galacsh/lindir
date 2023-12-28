@@ -100,6 +100,25 @@ func (p Path) Read() (PathSet, error) {
 	return paths, file.Close()
 }
 
+func (p Path) ReadPaths() (Paths, error) {
+	file, err := os.Open(p.String())
+	if err != nil {
+		return nil, err
+	}
+
+	paths := Paths{}
+
+	for scanner := bufio.NewScanner(file); scanner.Scan(); {
+		text := scanner.Text()
+		if text == "" || text[0] == '#' {
+			continue
+		}
+		paths.Add(text)
+	}
+
+	return paths, file.Close()
+}
+
 func (p Path) Write(paths PathSet) error {
 	file, err := os.Create(p.String())
 	if err != nil {
@@ -108,6 +127,22 @@ func (p Path) Write(paths PathSet) error {
 
 	for path := range paths {
 		_, err = file.WriteString(path + "\n")
+		if err != nil {
+			return err
+		}
+	}
+
+	return file.Close()
+}
+
+func (p Path) WritePaths(paths Paths) error {
+	file, err := os.Create(p.String())
+	if err != nil {
+		return err
+	}
+
+	for _, path := range paths {
+		_, err = file.WriteString(path.String() + "\n")
 		if err != nil {
 			return err
 		}
